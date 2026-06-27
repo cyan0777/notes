@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electric AI Particle Orb</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="stage" aria-label="动态电流粒子球演示">
+      <canvas id="orb" aria-hidden="true"></canvas>
+      <section class="panel" aria-label="电流粒子球控制台">
+        <div>
+          <p class="label">AI signal state</p>
+          <h1>Electric particle consciousness</h1>
+        </div>
+        <div class="controls">
+          <button class="icon-button" id="pause" type="button" aria-label="暂停或继续动画" title="暂停 / 继续">
+            <span class="pause-icon"></span>
+          </button>
+          <label>
+            <span>形变</span>
+            <input id="current" type="range" min="0" max="100" value="58" />
+          </label>
+          <label>
+            <span>速度</span>
+            <input id="speed" type="range" min="10" max="130" value="72" />
+          </label>
+          <label>
+            <span>辉光</span>
+            <input id="bloom" type="range" min="0" max="100" value="42" />
+          </label>
+        </div>
+      </section>
+    </main>
+    <script src="./orb.js" defer></script>
+  </body>
+</html>

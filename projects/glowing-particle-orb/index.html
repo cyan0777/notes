@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeuroRix Raster Aurora</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="stage" aria-label="NeuroRix 风格动态光栅极光演示">
+      <section class="hero-shell">
+        <canvas id="aurora" aria-hidden="true"></canvas>
+        <div class="grain" aria-hidden="true"></div>
+        <header class="nav" aria-label="页面导航">
+          <a class="brand" href="#">NEURIX</a>
+          <nav class="nav-links" aria-label="主导航">
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Resources</a>
+            <a href="#">Pricing</a>
+          </nav>
+          <div class="nav-actions">
+            <a href="#">Log in</a>
+            <button type="button">Start Free</button>
+          </div>
+        </header>
+
+        <section class="hero-copy">
+          <div class="mode-switch" aria-label="体验模式">
+            <span>Private</span>
+            <span>Customizable</span>
+            <span>AI Logic</span>
+          </div>
+          <h1>AI That Thinks With You, Not For You</h1>
+          <p>
+            Neurix helps teams turn scattered data into confident decisions using adaptive AI
+            workflows built for speed, clarity, and scale.
+          </p>
+
+          <form class="prompt-box" aria-label="AI 提示输入演示">
+            <label for="prompt">Ask Neurix anything...</label>
+            <textarea id="prompt" rows="3"></textarea>
+            <div class="prompt-actions">
+              <button class="tool-button" type="button">Attach</button>
+              <select aria-label="选择风格">
+                <option>Select style</option>
+                <option>Strategy</option>
+                <option>Research</option>
+              </select>
+              <button class="send-button" type="button" aria-label="发送">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M6 11l6-6 6 6" />
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          <div class="trusted">
+            <span>Trusted by experts at</span>
+            <strong>Google</strong>
+            <strong>Microsoft</strong>
+            <strong>stripe</strong>
+            <strong>amazon</strong>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="./aurora.js"></script>
+  </body>
+</html>
