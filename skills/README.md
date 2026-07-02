@@ -15,11 +15,12 @@
 
 | 名称 | 类型 | 适合场景 | 状态 |
 | --- | --- | --- | --- |
-| 暂无 | - | - | - |
+| [guizang-ppt-skill](https://github.com/op7418/guizang-ppt-skill) | Codex / WorkBuddy skill | 生成横向翻页网页 PPT、演讲 deck 和多比例封面 | 已收藏 |
 
 ## 安装记录
 
 - 2026-07-03：已移除失效的 Understand Anything 记录。
+- 2026-07-03：已收藏 `guizang-ppt-skill` 的 GitHub 链接。
 
 ## 记录格式
 
