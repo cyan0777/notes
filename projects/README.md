@@ -11,4 +11,4 @@
 
 ## 视觉实验分组
 
-Notes 里只保留 [视觉实验室目录](../visual-lab/README.md)，作为视觉实验和可视化工具的记录入口。
+Notes 里保留 [视觉实验室目录](../visual-lab/README.md) 作为视觉实验入口；可运行 Demo 放在 `/Users/jojo/Documents/Codex/visual-effects-lab`。

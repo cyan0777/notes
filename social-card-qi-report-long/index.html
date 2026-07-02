@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-CN" data-accent="ikb">
+<head>
+  <meta charset="utf-8">
+  <title>祁昊 360 环评个人报告 · 长图</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    :root {
+      --paper: #fafaf8;
+      --ink: #0a0a0a;
+      --grey-1: #f0f0ee;
+      --grey-2: #d4d4d2;
+      --grey-3: #737373;
+      --accent: #002FA7;
+      --accent-on: #ffffff;
+      --sans: "Inter", "Helvetica Neue", Helvetica, "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei UI", sans-serif;
+      --sans-zh: "Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei UI", "Inter", sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Consolas, monospace;
+      --sp-4: 12px;
+      --sp-5: 16px;
+      --sp-6: 24px;
+      --sp-7: 32px;
+      --sp-8: 40px;
+      --sp-9: 48px;
+      --sp-10: 64px;
+      --sp-11: 80px;
+      --sp-12: 96px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      font-family: var(--sans);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      padding: 0;
+    }
+    .sheet {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .poster {
+      position: relative;
+      width: 1080px;
+      height: 4050px;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      isolation: isolate;
+    }
+    .content {
+      width: 100%;
+      height: 100%;
+      padding: 92px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-10);
+      position: relative;
+      z-index: 2;
+    }
+    .stack { display: flex; flex-direction: column; }
+    .row { display: flex; flex-direction: row; }
+    .gap-4 { gap: var(--sp-4); }
+    .gap-5 { gap: var(--sp-5); }
+    .gap-6 { gap: var(--sp-6); }
+    .gap-7 { gap: var(--sp-7); }
+    .gap-8 { gap: var(--sp-8); }
+    .gap-9 { gap: var(--sp-9); }
+    .grow { flex: 1; }
+    .chrome-min {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--mono);
+      font-size: 18px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--grey-3);
+      padding-bottom: var(--sp-6);
+      border-bottom: 1px solid var(--grey-2);
+    }
+    .t-cat {
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 22px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0;
+    }
+    .t-meta {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--grey-3);
+      margin: 0;
+    }
+    .h-statement {
+      font-family: var(--sans);
+      font-weight: 200;
+      font-size: 132px;
+      line-height: 1.06;
+      letter-spacing: 0;
+      margin: 0;
+      color: var(--ink);
+    }
+    .h-xl {
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 78px;
+      line-height: 1.14;
+      letter-spacing: 0;
+      margin: 0;
+      color: var(--ink);
+    }
+    .h-md {
+      font-family: var(--sans);
+      font-weight: 400;
+      font-size: 46px;
+      line-height: 1.2;
+      letter-spacing: 0;
+      margin: 0;
+      color: var(--ink);
+    }
+    .lead {
+      font-family: var(--sans-zh);
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .body {
+      font-family: var(--sans-zh);
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1.55;
+      margin: 0;
+    }
+    .num-mega {
+      font-family: var(--sans);
+      font-size: 230px;
+      font-weight: 200;
+      line-height: .9;
+      letter-spacing: 0;
+      margin: 0;
+    }
+    .num-xl {
+      font-family: var(--sans);
+      font-size: 118px;
+      font-weight: 200;
+      line-height: .95;
+      letter-spacing: 0;
+      margin: 0;
+    }
+    .hr-accent {
+      width: 112px;
+      height: 4px;
+      border: 0;
+      background: var(--accent);
+      margin: 0;
+    }
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-7);
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: var(--sp-9);
+      align-items: end;
+    }
+    .hero-note {
+      border-top: 1px solid var(--grey-2);
+      padding-top: var(--sp-6);
+      color: var(--grey-3);
+    }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sp-6);
+    }
+    .kpi {
+      background: var(--grey-1);
+      padding: 28px 24px 30px;
+      min-height: 188px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .kpi.accent {
+      background: var(--accent);
+      color: var(--accent-on);
+    }
+    .kpi.accent .t-meta { color: rgba(255,255,255,.76); }
+    .kpi .score {
+      font-family: var(--sans);
+      font-size: 92px;
+      font-weight: 200;
+      line-height: .95;
+      margin: 0;
+      letter-spacing: 0;
+    }
+    .kpi .label {
+      font-family: var(--sans-zh);
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 1.25;
+      margin: 0;
+    }
+    .bar-list {
+      display: grid;
+      gap: 22px;
+    }
+    .mini-bars {
+      display: grid;
+      gap: 18px;
+    }
+    .mini-bars .bar-row {
+      grid-template-columns: 150px 1fr 60px;
+      gap: 22px;
+      padding-bottom: 16px;
+    }
+    .mini-bars .bar-label {
+      font-size: 25px;
+    }
+    .mini-bars .track {
+      height: 24px;
+    }
+    .mini-bars .bar-val {
+      font-size: 23px;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 190px 1fr 74px;
+      gap: var(--sp-6);
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--grey-2);
+    }
+    .bar-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .bar-label {
+      font-family: var(--sans-zh);
+      font-size: 29px;
+      font-weight: 500;
+      line-height: 1.25;
+    }
+    .track {
+      height: 30px;
+      background: var(--grey-1);
+      position: relative;
+    }
+    .fill {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: var(--w);
+      background: var(--accent);
+    }
+    .bar-val {
+      font-family: var(--mono);
+      font-size: 26px;
+      font-weight: 500;
+      text-align: right;
+    }
+    .matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-5);
+    }
+    .cell {
+      background: var(--grey-1);
+      min-height: 142px;
+      padding: 23px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: var(--sp-5);
+    }
+    .cell .nb {
+      font-family: var(--mono);
+      font-size: 17px;
+      letter-spacing: .08em;
+      color: var(--grey-3);
+      margin: 0;
+    }
+    .cell .title {
+      font-family: var(--sans-zh);
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.28;
+      margin: 0;
+    }
+    .cell .sub {
+      font-family: var(--sans-zh);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1.35;
+      color: var(--grey-3);
+      margin: 0;
+    }
+    .quote-band {
+      display: grid;
+      grid-template-columns: 230px 1fr;
+      gap: var(--sp-8);
+      padding: 42px 0;
+      border-top: 1px solid var(--grey-2);
+      border-bottom: 1px solid var(--grey-2);
+      align-items: start;
+    }
+    .eval-section {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: var(--sp-9);
+      padding-top: var(--sp-9);
+      border-top: 1px solid var(--grey-2);
+    }
+    .eval-side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-5);
+    }
+    .eval-main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-7);
+    }
+    .commentary-band {
+      border-top: 1px solid var(--grey-2);
+      padding-top: var(--sp-6);
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: var(--sp-7);
+      align-items: start;
+    }
+    .commentary-band .body {
+      color: var(--grey-3);
+    }
+    .feedback {
+      border: 1px solid var(--grey-2);
+      padding: 26px 26px 28px;
+      min-height: 205px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-5);
+    }
+    .feedback h3 {
+      font-family: var(--sans-zh);
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .feedback p {
+      font-family: var(--sans-zh);
+      font-size: 23px;
+      font-weight: 400;
+      line-height: 1.45;
+      color: var(--grey-3);
+      margin: 0;
+    }
+    .foot {
+      margin-top: auto;
+      border-top: 1px solid var(--grey-2);
+      padding-top: var(--sp-6);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--sp-7);
+      align-items: start;
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <section class="poster long" id="long-qi-report">
+      <div class="content">
+        <div class="chrome-min">
+          <span>JOJOHR · 360 REVIEW</span>
+          <span>2026.06.30</span>
+        </div>
+
+        <section class="section">
+          <div class="hero-grid">
+            <div class="stack gap-7">
+              <p class="t-cat">01 · 总览</p>
+              <h1 class="h-statement">祁昊 360<br>环评个人报告</h1>
+              <hr class="hr-accent">
+              <p class="lead">整体认可度较高，表现稳定且有支撑作用；下一步可把优势做法提炼成可复制的工作方式。</p>
+            </div>
+            <div class="stack gap-5">
+              <p class="t-meta">Total Score</p>
+              <p class="num-mega">10</p>
+              <p class="hero-note body">项目周期：2026-06-29 至 2026-07-06<br>项目名称：端到端真实闭环</p>
+            </div>
+          </div>
+          <div class="kpi-row">
+            <div class="kpi accent">
+              <p class="score">10</p>
+              <p class="label">上级评价</p>
+              <p class="t-meta">优势明显</p>
+            </div>
+            <div class="kpi">
+              <p class="score">10</p>
+              <p class="label">同级评价</p>
+              <p class="t-meta">优势明显</p>
+            </div>
+            <div class="kpi">
+              <p class="score">10</p>
+              <p class="label">下级评价</p>
+              <p class="t-meta">优势明显</p>
+            </div>
+            <div class="kpi">
+              <p class="score">10</p>
+              <p class="label">自评</p>
+              <p class="t-meta">对照理解</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="eval-section">
+          <div class="eval-side">
+            <p class="t-cat">02 · 上级评价</p>
+            <p class="num-xl">10</p>
+            <p class="t-meta">优势明显</p>
+          </div>
+          <div class="eval-main">
+            <h2 class="h-xl">目标承接与结果推进<br>获得高认可</h2>
+            <p class="lead">上级评价认可度较高，说明被评价人在目标承接、结果推进等方面表现较突出。</p>
+            <div class="mini-bars">
+              <div class="bar-row"><div class="bar-label">辅导反馈</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">资源协调</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">团队氛围</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+            </div>
+            <div class="commentary-band">
+              <p class="t-meta">开放反馈</p>
+              <p class="body">反馈围绕辅导反馈、资源协调与团队氛围展开，呈现出上级视角下对目标推进和组织支持的正向确认。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="eval-section">
+          <div class="eval-side">
+            <p class="t-cat">03 · 同级评价</p>
+            <p class="num-xl">10</p>
+            <p class="t-meta">优势明显</p>
+          </div>
+          <div class="eval-main">
+            <h2 class="h-xl">协作配合与信息同步<br>表现突出</h2>
+            <p class="lead">同级评价认可度较高，说明被评价人在协作配合、信息同步等方面表现较突出。</p>
+            <div class="mini-bars">
+              <div class="bar-row"><div class="bar-label">协作响应</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">边界意识</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">信息透明</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+            </div>
+            <div class="commentary-band">
+              <p class="t-meta">开放反馈</p>
+              <p class="body">反馈集中在协作响应、边界意识与信息透明，说明同级协作中更看重响应节奏、职责边界和同步质量。</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="eval-section">
+          <div class="eval-side">
+            <p class="t-cat">04 · 下级评价</p>
+            <p class="num-xl">10</p>
+            <p class="t-meta">优势明显</p>
+          </div>
+          <div class="eval-main">
+            <h2 class="h-xl">方向牵引与支持反馈<br>形成稳定感</h2>
+            <p class="lead">下级评价认可度较高，说明被评价人在方向牵引、支持反馈等方面表现较突出。</p>
+            <div class="mini-bars">
+              <div class="bar-row"><div class="bar-label">目标承接</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">向上沟通</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+              <div class="bar-row"><div class="bar-label">决策支持</div><div class="track"><div class="fill" style="--w:100%"></div></div><div class="bar-val">10</div></div>
+            </div>
+            <div class="commentary-band">
+              <p class="t-meta">开放反馈</p>
+              <p class="body">反馈指向目标承接、向上沟通与决策支持，体现下级对方向清晰度和管理支持感的稳定认可。</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="foot">
+          <p class="body">本长图根据 Word 文档内容重排；不展示评价人姓名、部门、职位、DingTalk ID 或原始逐条明细。</p>
+          <p class="t-meta">PRIVATE · SUMMARY</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

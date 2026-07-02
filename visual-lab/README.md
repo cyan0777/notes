@@ -10,6 +10,10 @@
 | `glowing-particle-orb/` | Canvas 光栅噪点 | NeuroRix 风格 hero，光栅噪点、动态极光、玻璃 UI。 |
 | `3d-cloud-mvp/` | Three.js 3D 云 | 文字采样成云团，Shader 柔云、深度和 hover dissolve。 |
 
+已拆出的独立项目位于 `/Users/jojo/Documents/Codex/visual-effects-lab`：
+
+- `ai-status-dot-generator/`：品牌 SVG/文字/状态图标点阵采样，带 AI 生成进度、状态切换和实时参数面板。
+
 ## 维护原则
 
 - Notes 里只放目录、方法、判断和设计记录。

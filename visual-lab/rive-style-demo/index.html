@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rive-style Timeline Rollback Demo</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #020403;
+        --panel: #070a09;
+        --text: #f4fff9;
+        --muted: #718078;
+        --soft: #26322c;
+        --grid: rgba(150, 180, 162, 0.12);
+        --green: #18dca0;
+        --orange: #db8a35;
+        --red: #ff405d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        overflow-x: hidden;
+        background:
+          radial-gradient(circle at 50% 8%, rgba(24, 220, 160, 0.12), transparent 30%),
+          radial-gradient(circle at 70% 54%, rgba(219, 138, 53, 0.12), transparent 28%),
+          var(--bg);
+        color: var(--text);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+      }
+
+      main {
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: 56px 24px;
+        width: 100%;
+      }
+
+      .demo {
+        min-width: 0;
+        width: min(1180px, 100%);
+      }
+
+      .intro {
+        display: flex;
+        min-width: 0;
+        align-items: end;
+        justify-content: space-between;
+        gap: 32px;
+        margin-bottom: 28px;
+      }
+
+      h1 {
+        min-width: 0;
+        max-width: 760px;
+        margin: 0;
+        color: #dff7ed;
+        font-size: clamp(28px, 4.6vw, 62px);
+        font-weight: 520;
+        letter-spacing: 0;
+        line-height: 0.96;
+      }
+
+      h1 span {
+        color: #78857f;
+      }
+
+      .controls {
+        display: flex;
+        flex: none;
+        gap: 10px;
+      }
+
+      button {
+        display: inline-grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(223, 247, 237, 0.18);
+        border-radius: 6px;
+        background: #090e0c;
+        color: #eafff6;
+        cursor: pointer;
+        transition:
+          border-color 180ms ease,
+          background 180ms ease,
+          transform 180ms ease;
+      }
+
+      button:hover {
+        border-color: rgba(24, 220, 160, 0.58);
+        background: #101713;
+        transform: translateY(-1px);
+      }
+
+      button svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .stage {
+        position: relative;
+        contain: paint;
+        overflow: hidden;
+        width: 100%;
+        aspect-ratio: 1920 / 640;
+        min-height: 330px;
+        border-top: 1px solid rgba(207, 234, 220, 0.14);
+        border-bottom: 1px solid rgba(207, 234, 220, 0.14);
+        background:
+          linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 64px 100%,
+          linear-gradient(0deg, rgba(150, 180, 162, 0.1) 1px, transparent 1px) 0 0 / 100% 106px,
+          linear-gradient(180deg, transparent, rgba(24, 220, 160, 0.04) 50%, transparent),
+          #020403;
+        box-shadow: 0 36px 120px rgba(0, 0, 0, 0.45);
+        isolation: isolate;
+      }
+
+      .stage::before,
+      .stage::after {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        content: "";
+      }
+
+      .stage::before {
+        background: linear-gradient(90deg, #020403 0%, transparent 16%, transparent 84%, #020403 100%);
+        z-index: 3;
+      }
+
+      .stage::after {
+        background-image: repeating-linear-gradient(
+          90deg,
+          transparent 0 17px,
+          rgba(223, 247, 237, 0.2) 18px 19px,
+          transparent 20px 31px
+        );
+        mask-image: linear-gradient(180deg, transparent 0, black 31%, transparent 42%);
+        opacity: 0.46;
+        z-index: 1;
+      }
+
+      .timeline {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+      }
+
+      .axis {
+        stroke: rgba(191, 221, 207, 0.24);
+        stroke-width: 1;
+      }
+
+      .green-line {
+        filter: drop-shadow(0 0 12px rgba(24, 220, 160, 0.55));
+        stroke: var(--green);
+        stroke-width: 2;
+        stroke-dasharray: 1280;
+        stroke-dashoffset: 1280;
+        animation: draw-green 900ms ease-out 340ms forwards;
+      }
+
+      .restore-path,
+      .restore-glow {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .restore-glow {
+        filter: blur(7px);
+        opacity: 0.65;
+        stroke: rgba(219, 138, 53, 0.72);
+        stroke-width: 9;
+        stroke-dasharray: 915;
+        stroke-dashoffset: 915;
+        animation: draw-restore 1700ms cubic-bezier(0.64, 0, 0.28, 1) 980ms forwards;
+      }
+
+      .restore-path {
+        stroke: var(--orange);
+        stroke-width: 2.2;
+        stroke-dasharray: 915;
+        stroke-dashoffset: 915;
+        animation: draw-restore 1700ms cubic-bezier(0.64, 0, 0.28, 1) 980ms forwards;
+      }
+
+      .event-line {
+        opacity: 0;
+        stroke: rgba(191, 221, 207, 0.26);
+        stroke-width: 1;
+        animation: fade-up 520ms ease forwards;
+      }
+
+      .event-line.green {
+        stroke: rgba(24, 220, 160, 0.7);
+      }
+
+      .event-line.red {
+        stroke: rgba(255, 64, 93, 0.82);
+      }
+
+      .dot {
+        opacity: 0;
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: pop 580ms cubic-bezier(0.2, 1.4, 0.32, 1) forwards;
+      }
+
+      .dot.green {
+        fill: var(--green);
+        filter: drop-shadow(0 0 10px rgba(24, 220, 160, 0.8));
+      }
+
+      .dot.orange {
+        fill: var(--orange);
+        filter: drop-shadow(0 0 10px rgba(219, 138, 53, 0.8));
+      }
+
+      .dot.red {
+        fill: var(--red);
+        filter: drop-shadow(0 0 10px rgba(255, 64, 93, 0.85));
+      }
+
+      .label {
+        opacity: 0;
+        color: var(--muted);
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        animation: fade-up 620ms ease forwards;
+      }
+
+      .label strong {
+        display: block;
+        color: #d6e6dd;
+        font-size: 14px;
+        font-weight: 650;
+      }
+
+      .label.red strong {
+        color: var(--red);
+      }
+
+      .label.green strong {
+        color: #c7fff0;
+      }
+
+      .restore-label {
+        opacity: 0;
+        animation: fade-up 600ms ease 2200ms forwards;
+      }
+
+      .restore-label rect {
+        fill: #060806;
+        stroke: var(--orange);
+        filter: drop-shadow(0 0 12px rgba(219, 138, 53, 0.5));
+      }
+
+      .restore-label text {
+        fill: #f9e9d6;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .scan {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: -12%;
+        z-index: 2;
+        width: 160px;
+        background: linear-gradient(90deg, transparent, rgba(24, 220, 160, 0.14), transparent);
+        filter: blur(0.5px);
+        transform: skewX(-10deg);
+        animation: scan 4.6s ease-in-out infinite;
+      }
+
+      .caption {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        margin-top: 18px;
+        color: #7d8c84;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .caption code {
+        color: #d8f8ec;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      @keyframes draw-green {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes draw-restore {
+        to {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: scale(0.35);
+        }
+
+        70% {
+          opacity: 1;
+          transform: scale(1.35);
+        }
+
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes scan {
+        0% {
+          transform: translateX(0) skewX(-10deg);
+          opacity: 0;
+        }
+
+        18%,
+        72% {
+          opacity: 1;
+        }
+
+        100% {
+          transform: translateX(900%) skewX(-10deg);
+          opacity: 0;
+        }
+      }
+
+      .stage.replay * {
+        animation-name: none !important;
+      }
+
+      @media (max-width: 760px) {
+        main {
+          padding: 34px 14px;
+        }
+
+        .intro,
+        .caption {
+          align-items: start;
+          flex-direction: column;
+        }
+
+        h1 {
+          max-width: 100%;
+          font-size: clamp(34px, 11vw, 46px);
+          overflow-wrap: anywhere;
+        }
+
+        .controls {
+          width: 100%;
+        }
+
+        button {
+          width: 56px;
+          height: 56px;
+        }
+
+        .stage {
+          aspect-ratio: 1.12;
+          min-height: 390px;
+        }
+
+        .timeline {
+          left: 50%;
+          width: 210%;
+          transform: translateX(-50%);
+        }
+
+        .label {
+          font-size: 11px;
+        }
+
+        .label strong {
+          font-size: 12px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 1ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 1ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="demo" aria-labelledby="title">
+        <div class="intro">
+          <h1 id="title">Database checkpoints. <span>Restore a previous state in one motion.</span></h1>
+          <div class="controls" aria-label="animation controls">
+            <button id="play" type="button" aria-label="replay animation">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M20 12a8 8 0 1 1-2.34-5.66M20 4v6h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div id="stage" class="stage">
+          <div class="scan"></div>
+          <svg class="timeline" viewBox="0 0 1440 480" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Timeline rollback animation</title>
+            <desc id="svg-desc">A checkpoint is restored after a query error on a deployment timeline.</desc>
+
+            <line class="axis" x1="0" x2="1440" y1="172" y2="172" />
+            <line class="axis" x1="0" x2="1440" y1="312" y2="312" />
+
+            <path class="green-line" d="M 0 312 L 1440 312" />
+            <path class="restore-glow" d="M 382 88 H 1072 Q 1112 88 1112 128 V 172 M 382 88 Q 342 88 342 128 V 172" />
+            <path class="restore-path" d="M 382 88 H 1072 Q 1112 88 1112 128 V 172 M 382 88 Q 342 88 342 128 V 172" />
+
+            <g class="restore-label">
+              <rect x="603" y="60" width="234" height="34" rx="17" />
+              <text x="720" y="82" text-anchor="middle">restore previous version</text>
+            </g>
+
+            <g style="animation-delay: 500ms">
+              <line class="event-line" x1="112" x2="112" y1="160" y2="184" style="animation-delay: 440ms" />
+              <foreignObject x="72" y="190" width="126" height="58">
+                <div class="label" style="animation-delay: 520ms" xmlns="http://www.w3.org/1999/xhtml">
+                  <span>12:00</span><strong>main</strong>
+                </div>
+              </foreignObject>
+            </g>
+
+            <line class="event-line" x1="245" x2="245" y1="160" y2="184" style="animation-delay: 620ms" />
+            <foreignObject x="216" y="190" width="132" height="58">
+              <div class="label" style="animation-delay: 700ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>12:24</span><strong>schema-v1</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line green" x1="342" x2="342" y1="172" y2="300" style="animation-delay: 860ms" />
+            <circle class="dot orange" cx="342" cy="172" r="4" style="animation-delay: 1020ms" />
+            <circle class="dot green" cx="342" cy="312" r="4" style="animation-delay: 1560ms" />
+            <foreignObject x="340" y="202" width="148" height="58">
+              <div class="label" style="animation-delay: 960ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>13:48</span><strong>checkpoint</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line" x1="520" x2="520" y1="160" y2="184" style="animation-delay: 1160ms" />
+            <foreignObject x="520" y="190" width="132" height="58">
+              <div class="label" style="animation-delay: 1240ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>14:15</span><strong>add-alerts</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line" x1="702" x2="702" y1="300" y2="324" style="animation-delay: 1360ms" />
+            <foreignObject x="696" y="340" width="150" height="58">
+              <div class="label green" style="animation-delay: 1440ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>18:42</span><strong>verify-data</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line" x1="875" x2="875" y1="160" y2="184" style="animation-delay: 1500ms" />
+            <foreignObject x="818" y="190" width="164" height="58">
+              <div class="label" style="animation-delay: 1580ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>16:42</span><strong>test-predeploy</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line red" x1="1050" x2="1050" y1="144" y2="184" style="animation-delay: 1700ms" />
+            <circle class="dot red" cx="1050" cy="172" r="4.5" style="animation-delay: 1880ms" />
+            <foreignObject x="1050" y="190" width="148" height="58">
+              <div class="label red" style="animation-delay: 1820ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>17:18</span><strong>query-error</strong>
+              </div>
+            </foreignObject>
+
+            <line class="event-line green" x1="1112" x2="1112" y1="172" y2="300" style="animation-delay: 2160ms" />
+            <circle class="dot green" cx="1112" cy="312" r="4" style="animation-delay: 2360ms" />
+            <foreignObject x="1100" y="340" width="144" height="58">
+              <div class="label green" style="animation-delay: 2300ms" xmlns="http://www.w3.org/1999/xhtml">
+                <span>21:15</span><strong>merge-pr</strong>
+              </div>
+            </foreignObject>
+          </svg>
+        </div>
+
+        <div class="caption">
+          <span>网页里这是 SVG/CSS 版本；真实 Rive 版会把这些路径、关键帧和状态机放进 <code>.riv</code> 文件。</span>
+          <span>点击右上角按钮可以重播。</span>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const stage = document.querySelector("#stage");
+      const playButton = document.querySelector("#play");
+
+      playButton.addEventListener("click", () => {
+        stage.classList.add("replay");
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            stage.classList.remove("replay");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
